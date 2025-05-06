@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Timer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background: #f5f5f5;
+    }
+    #timer {
+      font-size: 4rem;
+      margin-bottom: 20px;
+    }
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: #007bff;
+      color: white;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="timer">00:00</div>
+  <div class="buttons">
+    <button id="playBtn">Play</button>
+    <button id="pauseBtn">Pause</button>
+    <button onclick="adjustTime(600)">+10 min</button>
+    <button onclick="adjustTime(60)">+1 min</button>
+    <button onclick="adjustTime(10)">+10 sec</button>
+    <button onclick="adjustTime(1)">+1 sec</button>
+    <button onclick="adjustTime(-600)">-10 min</button>
+    <button onclick="adjustTime(-60)">-1 min</button>
+    <button onclick="adjustTime(-10)">-10 sec</button>
+    <button onclick="adjustTime(-1)">-1 sec</button>
+  </div>
+
+  <script>
+    let seconds = 0;
+    let timerInterval = null;
+
+    function updateTimer() {
+      let mins = Math.floor(seconds / 60);
+      let secs = seconds % 60;
+      document.getElementById('timer').textContent = 
+        `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
+
+    function startTimer() {
+      if (!timerInterval) {
+        timerInterval = setInterval(() => {
+          seconds++;
+          updateTimer();
+        }, 1000);
+      }
+    }
+
+    function pauseTimer() {
+      clearInterval(timerInterval);
+      timerInterval = null;
+    }
+
+    function adjustTime(amount) {
+      seconds += amount;
+      if (seconds < 0) seconds = 0;
+      updateTimer();
+    }
+
+    document.getElementById('playBtn').addEventListener('click', startTimer);
+    document.getElementById('pauseBtn').addEventListener('click', pauseTimer);
+
+    updateTimer();
+  </script>
+
+</body>
+</html>
